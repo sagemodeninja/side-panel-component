@@ -48,6 +48,7 @@ export class SidePanel extends CustomComponent {
             align-items: center;
             box-sizing: border-box;
             display: flex;
+            flex-shrink: 0;
             height: 50px;
             padding: 0px 16px;
         }
@@ -89,6 +90,7 @@ export class SidePanel extends CustomComponent {
         .body {
             box-sizing: border-box;
             flex-grow: 1;
+            overflow: auto;
             padding: 8px 16px;
         }
 

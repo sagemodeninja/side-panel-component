@@ -1,0 +1,18 @@
+@import url(../fonts/segoe-ui-variable/segoe-ui-variable.css);
+
+body {
+    background-color: var(--background-fill-mica-base);
+    color: var(--fill-text-primary);
+    color-scheme: light;
+    font-family: 'Segoe UI Variable', sans-serif;
+}
+
+body.dark {
+    color-scheme: dark;
+}
+
+#flex_container {
+    display: flex;
+    gap: 15px;
+    margin: 15px;
+}

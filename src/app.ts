@@ -5,20 +5,20 @@ import '@sagemodeninja/fluent-command-bar-component';
 import '@sagemodeninja/fluent-icon-element-component';
 import { DesignToken } from '@sagemodeninja/design-token-provider';
 import colorSchemeProvider from '@sagemodeninja/color-scheme-provider';
+import { SidePanel } from './';
 
 document.addEventListener('DOMContentLoaded', () => {
     const toggleMode = document.getElementById('toggle_mode');
     const togglePanel = document.getElementById('toggle_panel');
-    const panel = document.getElementById('panel');
+    const toggleSubtitle = document.getElementById('toggle_subtitle');
+    const panel = document.getElementById('panel') as SidePanel;
 
     const applyDesignTokens = () => {
         const fillTextPrimary = new DesignToken<string>('fill-text-primary');
         const fillTextSecondary = new DesignToken<string>('fill-text-secondary');
         const fillSubtleSecondary = new DesignToken<string>('fill-subtle-secondary');
         const fillSubtleTertiary = new DesignToken<string>('fill-subtle-tertiary');
-        const backgroundFillAcrylicDefault = new DesignToken<string>(
-            'background-fill-acrylic-default'
-        );
+        const backgroundFillAcrylicDefault = new DesignToken<string>('background-fill-acrylic-default');
         const backgroundFillMicaBase = new DesignToken<string>('background-fill-mica-base');
         const strokeSurfaceFlyout = new DesignToken<string>('stroke-surface-flyout');
         const shadowFlyout = new DesignToken<string>('shadow-flyout');
@@ -48,5 +48,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     panel.addEventListener('dismiss', () => {
         panel.hidden = true;
+    });
+
+    // Subtitle
+    let subtitleState = false;
+
+    toggleSubtitle.addEventListener('click', () => {
+        subtitleState = !subtitleState;
+        panel.subtitle = subtitleState ? 'Subtitle Text Here...' : '';
     });
 });

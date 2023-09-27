@@ -49,19 +49,40 @@ export class SidePanel extends CustomComponent {
             box-sizing: border-box;
             display: flex;
             flex-shrink: 0;
-            height: 50px;
+            min-height: 50px;
             padding: 0px 16px;
         }
 
         .header {
+            gap: 16px;
             justify-content: space-between;
         }
 
+        .header:not(.no-subtitle) {
+            padding: 8px 16px;
+        }
+
+        .header-title {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
         .title {
             color: var(--fill-text-primary);
             font-family: 'Segoe UI Variable', sans-serif;
             font-size: 20px;
             font-variation-settings: 'wght' 600, 'opsz' 28;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .subtitle {
+            color: var(--fill-text-secondary);
+            font-family: 'Segoe UI Variable', sans-serif;
+            font-size: 12px;
+            font-variation-settings: 'wght' 400, 'opsz' 16;
         }
         
         .dismiss-button {
@@ -71,6 +92,7 @@ export class SidePanel extends CustomComponent {
             color: var(--fill-text-primary);
             cursor: default;
             display: flex;
+            flex-shrink: 0;
             height: 32px;
             justify-content: center;
             width: 32px;
@@ -106,16 +128,26 @@ export class SidePanel extends CustomComponent {
     private _firstRender: boolean = true;
     private _overlayDiv: HTMLDivElement;
     private _panelDiv: HTMLDivElement;
+    private _headerDiv: HTMLDivElement;
     private _panelTitleSpan: HTMLSpanElement;
+    private _panelSubtitleSpan: HTMLSpanElement;
     private _dismissButton: HTMLDivElement;
     private _footerSlot: HTMLSlotElement;
     private _footerDiv: HTMLSlotElement;
 
     static get observedAttributes() {
-        return ['title', 'width', 'hidden'];
+        return ['title', 'subtitle', 'width', 'hidden'];
     }
 
     /* Attributes */
+    get subtitle(): string {
+        return this.getAttribute('subtitle');
+    }
+
+    set subtitle(value: string) {
+        this.setAttribute('subtitle', value);
+    }
+
     get width(): number {
         const value = this.getAttribute('width');
 
@@ -140,9 +172,19 @@ export class SidePanel extends CustomComponent {
         return this._panelDiv;
     }
 
+    get headerDiv() {
+        this._headerDiv ??= this.shadowRoot.querySelector('.header');
+        return this._headerDiv;
+    }
+
     get panelTitleSpan() {
         this._panelTitleSpan ??= this.shadowRoot.querySelector('.title');
         return this._panelTitleSpan;
+    }
+
+    get panelSubtitleSpan() {
+        this._panelSubtitleSpan ??= this.shadowRoot.querySelector('.subtitle');
+        return this._panelSubtitleSpan;
     }
 
     get dismissButton() {
@@ -165,8 +207,11 @@ export class SidePanel extends CustomComponent {
             <div class="positioning-region" part="positioning-region">
                 <div class="overlay" part="overlay"></div>
                 <div class="panel">
-                    <div class="header" part="header">
-                        <span class="title" part="title"></span>
+                    <div class="header no-subtitle" part="header">
+                        <div class="header-title">
+                            <span class="title" part="title"></span>
+                            <span class="subtitle" part="subtitle">Test Subtitle</span>
+                        </div>
                         <div class="dismiss-button" part="dismiss-button">
                             <fluent-symbol-icon Symbol="ChromeClose" font-size="12"/>
                         </div>
@@ -204,7 +249,11 @@ export class SidePanel extends CustomComponent {
     }
 
     private setTitle() {
+        const { subtitle } = this;
+
+        this.headerDiv.classList.toggle('no-subtitle', !subtitle || subtitle === '');
         this.panelTitleSpan.innerText = this.title;
+        this.panelSubtitleSpan.innerText = subtitle;
     }
 
     private setWidth() {

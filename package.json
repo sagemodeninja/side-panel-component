@@ -1,6 +1,6 @@
 {
     "name": "@sagemodeninja/side-panel-component",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "",
     "main": "dist/side-panel-component.js",
     "types": "src/@types/side-panel-component.d.ts",
